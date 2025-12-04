@@ -36,12 +36,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // private bool CheckMovementConditions()
-    // {
-    //     bool seeWallAhead = CheckWallAhead();
-    //     return seeWallAhead;
-    // }
-
     private bool CheckWallAhead()
     {
         Vector2 rayDirection = (_lookToRight ? Vector2.right : Vector2.left);
