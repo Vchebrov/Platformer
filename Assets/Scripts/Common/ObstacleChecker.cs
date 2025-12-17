@@ -12,7 +12,7 @@ public class ObstacleChecker : MonoBehaviour
         Vector2 raySource = transform.position;
 
         RaycastHit2D hit = Physics2D.Raycast(raySource,
-            Vector2.down, _wallCheckDistance, _obstacleLayer);
+            rayDirection, _wallCheckDistance, _obstacleLayer);
 
         Debug.DrawRay(raySource,
             rayDirection * _wallCheckDistance,

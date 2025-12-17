@@ -1,70 +1,68 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Mover), typeof(AudioSource), typeof(Animator))]
-[RequireComponent(typeof(Turnover), typeof(InputReader))]
+[RequireComponent(typeof(Mover), typeof(AudioSource))]
+[RequireComponent(typeof(Fliper), typeof(InputReader))]
 public class Hero : MonoBehaviour
 {
+    private static readonly int WalkHash = Animator.StringToHash("Walk");
+    private static readonly int JumpHash = Animator.StringToHash("Jump");
+    
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _jumpForce = 10f;
-    
+
+    [SerializeField] private Collector _collector;
     [SerializeField] private AudioClip _stepSoundLeft;
     [SerializeField] private AudioClip _stepSoundRight;
+    [SerializeField] private GroundDetector _groundDetector;
 
     private InputReader _inputReader;
     private Mover _mover;
-    private Turnover _turnover;
-    private GroundDetector _groundDetector;
-    private Animator _animator;
-    private AudioSource _audioSource;
+    private Fliper _fliper;
+    private AnimationHandler _animationHandler;
+    private SoundHandler _soundHandler;
 
     private bool _lookToRight = true;
     private bool _isOnGround = true;
     private bool _isSoundOn = false;
 
-    private static readonly int WalkHash = Animator.StringToHash("Walk");
-    private static readonly int JumpHash = Animator.StringToHash("Jump");
 
     private WaitForSeconds _stepDelay;
     private float _delay = 0.3f;
+    
+    public event Action<Transform> Collected;
 
     private void Awake()
     {
         _mover = GetComponent<Mover>();
-        _audioSource = GetComponent<AudioSource>();
-        _turnover = GetComponent<Turnover>();
-        _animator = GetComponent<Animator>();
+        _fliper = GetComponent<Fliper>();
+        _animationHandler = GetComponent<AnimationHandler>();
         _stepDelay = new WaitForSeconds(_delay);
         _inputReader = GetComponent<InputReader>();
-        _groundDetector = GetComponentInChildren<GroundDetector>();
+        _soundHandler = GetComponent<SoundHandler>();
+    }
+
+    private void OnEnable()
+    {
+        _collector.Touched += OnCollected;
+    }
+
+    private void OnDisable()
+    {
+        _collector.Touched -= OnCollected;
     }
 
     private void FixedUpdate()
     {
         if (_isOnGround)
         {
-            _animator.SetBool(JumpHash, false);
+            _animationHandler.AnimateWalk(JumpHash, !_isOnGround);
         }
 
-        _mover.Move(_inputReader.Direction, _speed);
-        _animator.SetBool(WalkHash, (_inputReader.Direction != 0 && _groundDetector.IsOnGround));
+        Move();
 
-        if (_inputReader.Direction > 0 && !_lookToRight)
-        {
-            _turnover.Flip(transform);
-            _lookToRight = !_lookToRight;
-        }
-        else if (_inputReader.Direction < 0 && _lookToRight)
-        {
-            _turnover.Flip(transform);
-            _lookToRight = !_lookToRight;
-        }
-
-        if (_inputReader.GetIsJump() && _groundDetector.IsOnGround)
-        {
-            _mover.Jump(_jumpForce);
-            _animator.SetBool(JumpHash, true);
-        }
+        Jump();
 
         if (_inputReader.Direction != 0 && _groundDetector.IsOnGround && !_isSoundOn)
         {
@@ -72,23 +70,50 @@ public class Hero : MonoBehaviour
         }
     }
 
+    private void Move()
+    {
+        _mover.Move(_inputReader.Direction, _speed);
+        _animationHandler.AnimateWalk(WalkHash, (_inputReader.Direction != 0 && _groundDetector.IsOnGround));
+
+
+        if (_inputReader.Direction > 0 && !_lookToRight)
+        {
+            _lookToRight = !_lookToRight;
+            _fliper.Flip(_lookToRight);
+        }
+        else if (_inputReader.Direction < 0 && _lookToRight)
+        {
+            _lookToRight = !_lookToRight;
+            _fliper.Flip(_lookToRight);
+        }
+    }
+
+    private void OnCollected(Transform coin)
+    {
+        Collected?.Invoke(coin);
+        _soundHandler.CollectCoin();
+    }
+
+    private void Jump()
+    {
+        if (_inputReader.GetIsJump() && _groundDetector.IsOnGround)
+        {
+            _mover.Jump(_jumpForce);
+            _animationHandler.AnimateJump(JumpHash, true);
+        }
+    }
+
     private IEnumerator PlayStepSound()
     {
         _isSoundOn = true;
-
-        while (_animator.GetBool(WalkHash) && _groundDetector.IsOnGround)
-        {
-            _audioSource.PlayOneShot(_stepSoundLeft);
-            yield return _stepDelay;
-
-            if (!_animator.GetBool(WalkHash) || !_groundDetector.IsOnGround)
-                break;
-
-            _audioSource.PlayOneShot(_stepSoundRight);
-
-            yield return _stepDelay;
-        }
-
+        
+        _soundHandler.PlaySound(_stepSoundLeft);
+        yield return _stepDelay;
+        
+        _soundHandler.PlaySound(_stepSoundRight);
+        
+        yield return _stepDelay;
+    
         _isSoundOn = false;
     }
 }

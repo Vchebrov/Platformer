@@ -1,25 +1,22 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-[RequireComponent(typeof(AudioSource))]
 public class CoinSpawner : MonoBehaviour
 {
     [SerializeField] private Transform _coinPrefab;
     [SerializeField] private int _coinsNumber = 5;
     [SerializeField] private float _yPositionLimit = -1f;
-    [SerializeField] private CoinCollector _collector;
-
+    [SerializeField] private Hero _hero;
+    
     private ObjectPool<Transform> _pool;
-    private AudioSource _audioSource;
     private float _minSpawnXPosition = -28f;
     private float _maxSpawnXPosition = 28f;
 
     private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
         _pool = new ObjectPool<Transform>(
-            createFunc: () => FillByCoins(),
-            actionOnGet: (obj) => InitializeGetAction(obj),
+            createFunc: () => InitiateCoin(),
+            actionOnGet: (obj) => ActivateCoin(obj),
             actionOnRelease: (obj) => RemoveFromScene(obj),
             actionOnDestroy: (obj) => Destroy(obj),
             collectionCheck: true,
@@ -27,43 +24,40 @@ public class CoinSpawner : MonoBehaviour
             maxSize: 5
         );
     }
+    
+    private void OnEnable()
+    {
+        if (_hero != null)
+        {
+            _hero.Collected += OnRemoveCoin; 
+        }
+        else
+        {
+            Debug.LogError("CoinSpawner: _hero не задан в инспекторе!");
+        }
+    }
 
     private void Start()
     {
         CreateCoins();
     }
 
-    private void OnEnable()
-    {
-        if (_collector != null)
-        {
-            _collector.Touched += OnRemoveCoin; 
-        }
-        else
-        {
-            Debug.LogError("CoinSpawner: _collector не задан в инспекторе!");
-        }
-    }
-
     private void OnDisable()
     {
-        if (_collector != null)
+        if (_hero != null)
         {
-            _collector.Touched -= OnRemoveCoin; 
+            _hero.Collected -= OnRemoveCoin; 
         }
     }
 
-    private Transform FillByCoins()
+    private Transform InitiateCoin()
     {
-        Transform coin = Instantiate(_coinPrefab);
-
-        return coin;
+        return Instantiate(_coinPrefab);
     }
 
     private void RemoveFromScene(Transform obj)
     {
         obj.gameObject.SetActive(false);
-        _audioSource.PlayOneShot(_audioSource.clip);
     }
 
     private void OnRemoveCoin(Transform coinTransform)
@@ -80,13 +74,13 @@ public class CoinSpawner : MonoBehaviour
         }
     }
 
-    private void InitializeGetAction(Transform obj)
+    private void ActivateCoin(Transform obj)
     {
-        obj.position = InitiateCoinPosition();
+        obj.position = GenerateRandomPosition();
         obj.gameObject.SetActive(true);
     }
 
-    private Vector2 InitiateCoinPosition()
+    private Vector2 GenerateRandomPosition()
     {
         return new Vector2(Random.Range(_minSpawnXPosition, _maxSpawnXPosition), _yPositionLimit);
     }

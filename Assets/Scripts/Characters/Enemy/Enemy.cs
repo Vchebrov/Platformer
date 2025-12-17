@@ -1,28 +1,28 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(Turnover))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(Fliper))]
 public class Enemy : MonoBehaviour
 {
+    private static readonly int WalkHash = Animator.StringToHash("Walk");
+
     [SerializeField] private Transform _eyes;
     [SerializeField] private float _speed = 1f;
 
-    private Turnover _turnover;
+    private Fliper _fliper;
     private Rigidbody2D _rigidbody2D;
     private ObstacleChecker _obstacleChecker;
-    private Animator _animator;
-    private Mover _mover;
-    
+    private AnimationHandler _animationHandler;
+    private Patrol _patrol;
+
     private bool _lookToRight = true;
 
-    private static readonly int WalkHash = Animator.StringToHash("Walk");
-    
     private void Awake()
     {
-        _mover = GetComponent<Mover>();
-        _turnover = GetComponent<Turnover>();
+        _patrol = GetComponent<Patrol>();
+        _fliper = GetComponent<Fliper>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _lookToRight = transform.localScale.x > 0;
-        _animator = GetComponent<Animator>();
+        _animationHandler = GetComponent<AnimationHandler>();
         _obstacleChecker = GetComponentInChildren<ObstacleChecker>();
     }
 
@@ -30,15 +30,15 @@ public class Enemy : MonoBehaviour
     {
         if (_obstacleChecker.CheckAhead(_lookToRight))
         {
-            _mover.Move(_lookToRight ? 1 : -1, _speed);
-            _animator.SetBool(WalkHash, true);
+            _rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
+            _lookToRight = !_lookToRight;
+            
+            _fliper.Flip(_lookToRight);
         }
         else
         {
-            _rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
-
-            _turnover.Flip(transform);
-            _lookToRight = !_lookToRight;
+            _patrol.Move(_lookToRight ? 1 : -1, _speed);
+            _animationHandler.AnimateWalk(WalkHash, true);
         }
     }
 }

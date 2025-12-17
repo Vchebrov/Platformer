@@ -1882,7 +1882,8 @@ GameObject:
   - component: {fileID: 3315938655218100363}
   - component: {fileID: 7188671222081069355}
   - component: {fileID: 2222999708806132627}
-  - component: {fileID: 1822569041525529277}
+  - component: {fileID: 3856780759216713749}
+  - component: {fileID: 8791042168900534692}
   m_Layer: 3
   m_Name: black_knight
   m_TagString: Untagged
@@ -1985,10 +1986,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _eyes: {fileID: 1026658696053940586}
   _speed: 1
-  _wallCheckDistance: 1.5
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!70 &3315938655218100363
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2132,7 +2129,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1822569041525529277
+--- !u!114 &3856780759216713749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2141,7 +2138,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011539305864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc896eefe8e64ff47aa9a0541547092e, type: 3}
+  m_Script: {fileID: 11500000, guid: deca390b78d06cb4a9dd684dce6ae8b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 95000010383629962}
+--- !u!114 &8791042168900534692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000011539305864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c440367eac399d44aa4910f72786a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1000011576961380
@@ -5490,3 +5500,4 @@ MonoBehaviour:
   _obstacleLayer:
     serializedVersion: 2
     m_Bits: 8
+  _wallCheckDistance: 1.5
