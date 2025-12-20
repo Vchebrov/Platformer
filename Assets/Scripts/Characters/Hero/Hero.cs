@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Mover), typeof(AudioSource))]
+[RequireComponent(typeof(Mover), typeof(AudioSource), typeof(EnemyAnimationHandler))]
 [RequireComponent(typeof(Fliper), typeof(InputReader))]
 public class Hero : MonoBehaviour
 {
@@ -20,7 +20,7 @@ public class Hero : MonoBehaviour
     private InputReader _inputReader;
     private Mover _mover;
     private Fliper _fliper;
-    private AnimationHandler _animationHandler;
+    private EnemyAnimationHandler _heroAnimationHandler;
     private SoundHandler _soundHandler;
 
     private bool _lookToRight = true;
@@ -37,7 +37,7 @@ public class Hero : MonoBehaviour
     {
         _mover = GetComponent<Mover>();
         _fliper = GetComponent<Fliper>();
-        _animationHandler = GetComponent<AnimationHandler>();
+        _heroAnimationHandler = GetComponent<EnemyAnimationHandler>();
         _stepDelay = new WaitForSeconds(_delay);
         _inputReader = GetComponent<InputReader>();
         _soundHandler = GetComponent<SoundHandler>();
@@ -57,7 +57,7 @@ public class Hero : MonoBehaviour
     {
         if (_isOnGround)
         {
-            _animationHandler.AnimateWalk(JumpHash, !_isOnGround);
+            _heroAnimationHandler.AnimateJump(JumpHash, !_isOnGround);
         }
 
         Move();
@@ -73,7 +73,7 @@ public class Hero : MonoBehaviour
     private void Move()
     {
         _mover.Move(_inputReader.Direction, _speed);
-        _animationHandler.AnimateWalk(WalkHash, (_inputReader.Direction != 0 && _groundDetector.IsOnGround));
+        _heroAnimationHandler.AnimateWalk(WalkHash, (_inputReader.Direction != 0 && _groundDetector.IsOnGround));
 
 
         if (_inputReader.Direction > 0 && !_lookToRight)
@@ -99,7 +99,7 @@ public class Hero : MonoBehaviour
         if (_inputReader.GetIsJump() && _groundDetector.IsOnGround)
         {
             _mover.Jump(_jumpForce);
-            _animationHandler.AnimateJump(JumpHash, true);
+            _heroAnimationHandler.AnimateJump(JumpHash, true);
         }
     }
 

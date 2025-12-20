@@ -1,6 +1,8 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(Fliper))]
+[RequireComponent(typeof(EnemyAnimationHandler))]
 public class Enemy : MonoBehaviour
 {
     private static readonly int WalkHash = Animator.StringToHash("Walk");
@@ -11,7 +13,7 @@ public class Enemy : MonoBehaviour
     private Fliper _fliper;
     private Rigidbody2D _rigidbody2D;
     private ObstacleChecker _obstacleChecker;
-    private AnimationHandler _animationHandler;
+    private EnemyAnimationHandler _enemyAnimationHandler;
     private Patrol _patrol;
 
     private bool _lookToRight = true;
@@ -22,8 +24,8 @@ public class Enemy : MonoBehaviour
         _fliper = GetComponent<Fliper>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _lookToRight = transform.localScale.x > 0;
-        _animationHandler = GetComponent<AnimationHandler>();
-        _obstacleChecker = GetComponentInChildren<ObstacleChecker>();
+        _enemyAnimationHandler = GetComponent<EnemyAnimationHandler>();
+        _obstacleChecker = _eyes.GetComponent<ObstacleChecker>();
     }
 
     private void FixedUpdate()
@@ -38,7 +40,7 @@ public class Enemy : MonoBehaviour
         else
         {
             _patrol.Move(_lookToRight ? 1 : -1, _speed);
-            _animationHandler.AnimateWalk(WalkHash, true);
+            _enemyAnimationHandler.AnimateWalk(WalkHash, true);
         }
     }
 }
