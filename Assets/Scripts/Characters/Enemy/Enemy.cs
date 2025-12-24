@@ -15,32 +15,48 @@ public class Enemy : MonoBehaviour
     private ObstacleChecker _obstacleChecker;
     private EnemyAnimationHandler _enemyAnimationHandler;
     private Patrol _patrol;
-
-    private bool _lookToRight = true;
+    private Mover _mover;
+    private bool _currentLookToRight = true;
+    private bool _isTurning = false;
 
     private void Awake()
     {
         _patrol = GetComponent<Patrol>();
         _fliper = GetComponent<Fliper>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _lookToRight = transform.localScale.x > 0;
         _enemyAnimationHandler = GetComponent<EnemyAnimationHandler>();
         _obstacleChecker = _eyes.GetComponent<ObstacleChecker>();
+        _mover = GetComponent<Mover>();
     }
 
     private void FixedUpdate()
     {
-        if (_obstacleChecker.CheckAhead(_lookToRight))
+        Vector2 movementDirection = _patrol.GetMovementDirection();
+        
+        bool newLookToRight = movementDirection.x > 0;
+        
+        if (newLookToRight != _currentLookToRight && !_isTurning)
         {
-            _rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
-            _lookToRight = !_lookToRight;
-            
-            _fliper.Flip(_lookToRight);
+            StartTurn(newLookToRight);
+            return;
         }
-        else
+        
+        if (!_isTurning)
         {
-            _patrol.Move(_lookToRight ? 1 : -1, _speed);
-            _enemyAnimationHandler.AnimateWalk(WalkHash, true);
+            _mover.Move(movementDirection.x, _speed);
+            _enemyAnimationHandler.AnimateWalk(true);
         }
+    }
+    
+    private void StartTurn(bool newLookToRight)
+    {
+        _isTurning = true;
+        _mover.StopMovement();
+        _enemyAnimationHandler.AnimateWalk(false);
+        
+        _currentLookToRight = newLookToRight;
+        _fliper.Flip(_currentLookToRight);
+        
+        _isTurning = false;
     }
 }

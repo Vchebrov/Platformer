@@ -18,4 +18,9 @@ public class Mover : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(speed * direction, _rigidbody.velocity.y);
     }
+
+    public void StopMovement()
+    {
+        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+    }
 }

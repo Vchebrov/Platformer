@@ -6,10 +6,10 @@ public class CameraMover : MonoBehaviour
 {
     [SerializeField] private Transform _heroReference;
     [SerializeField] private float _smoothing = 0.3f;
+    [SerializeField] private float _xPositionMin = -31.1f;
+    [SerializeField] private float _xPositionMax = -0.1f;
 
     private Vector3 _velocity = Vector3.zero;
-    private float _xPositionMin = -31.1f;
-    private float _xPositionMax = -0.2f;
     private float _yFixedPosition = 0.9f;
     private float _cameraXPosition;
 

@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class Patrol : MonoBehaviour
 {
-    private Rigidbody2D _rigidbody;
-
-    private void Awake()
+    [SerializeField] private ObstacleChecker _obstacleChecker;
+    
+    private bool _lookToRight = true;
+    
+    public Vector2 GetMovementDirection()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-    }
-
-    public void Move(float direction, float speed)
-    {
-        _rigidbody.velocity = new Vector2(speed * direction, _rigidbody.velocity.y);
+        if (_obstacleChecker.CheckAhead(_lookToRight))
+        {
+            _lookToRight = !_lookToRight;
+        }
+        
+        return _lookToRight ? Vector2.right : Vector2.left;
     }
 }
+

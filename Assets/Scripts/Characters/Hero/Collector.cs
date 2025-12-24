@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class Collector : MonoBehaviour
 {
-    [SerializeField] private LayerMask _targetLayer;
-    public event Action<Transform> Touched;
+    [SerializeField] private SoundHandler _soundHandler;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if ((_targetLayer.value & (1 << other.gameObject.layer)) != 0)
+        if (collision.gameObject.TryGetComponent(out Coin coin))
         {
-            Touched?.Invoke(other.transform);
+            _soundHandler.CollectCoin();
+            coin.Collect();
         }
     }
 }

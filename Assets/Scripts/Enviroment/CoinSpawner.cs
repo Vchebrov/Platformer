@@ -3,18 +3,18 @@ using UnityEngine.Pool;
 
 public class CoinSpawner : MonoBehaviour
 {
-    [SerializeField] private Transform _coinPrefab;
+    [SerializeField] private Coin _coinPrefab;
     [SerializeField] private int _coinsNumber = 5;
     [SerializeField] private float _yPositionLimit = -1f;
     [SerializeField] private Hero _hero;
     
-    private ObjectPool<Transform> _pool;
+    private ObjectPool<Coin> _pool;
     private float _minSpawnXPosition = -28f;
     private float _maxSpawnXPosition = 28f;
 
     private void Awake()
     {
-        _pool = new ObjectPool<Transform>(
+        _pool = new ObjectPool<Coin>(
             createFunc: () => InitiateCoin(),
             actionOnGet: (obj) => ActivateCoin(obj),
             actionOnRelease: (obj) => RemoveFromScene(obj),
@@ -24,46 +24,27 @@ public class CoinSpawner : MonoBehaviour
             maxSize: 5
         );
     }
-    
-    private void OnEnable()
-    {
-        if (_hero != null)
-        {
-            _hero.Collected += OnRemoveCoin; 
-        }
-        else
-        {
-            Debug.LogError("CoinSpawner: _hero не задан в инспекторе!");
-        }
-    }
 
     private void Start()
     {
         CreateCoins();
     }
 
-    private void OnDisable()
+    private Coin InitiateCoin()
     {
-        if (_hero != null)
-        {
-            _hero.Collected -= OnRemoveCoin; 
-        }
+        Coin coin = Instantiate(_coinPrefab);
+        coin.Collected += OnRemoveCoin;
+        return coin;
     }
 
-    private Transform InitiateCoin()
-    {
-        return Instantiate(_coinPrefab);
-    }
-
-    private void RemoveFromScene(Transform obj)
+    private void RemoveFromScene(Coin obj)
     {
         obj.gameObject.SetActive(false);
     }
 
-    private void OnRemoveCoin(Transform coinTransform)
+    private void OnRemoveCoin(Coin coin)
     {
-        Debug.Log("Removing coin");
-        _pool.Release(coinTransform);
+        _pool.Release(coin);
     }
 
     private void CreateCoins()
@@ -74,9 +55,9 @@ public class CoinSpawner : MonoBehaviour
         }
     }
 
-    private void ActivateCoin(Transform obj)
+    private void ActivateCoin(Coin obj)
     {
-        obj.position = GenerateRandomPosition();
+        obj.transform.position = GenerateRandomPosition();
         obj.gameObject.SetActive(true);
     }
 

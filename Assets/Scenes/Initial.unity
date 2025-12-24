@@ -14917,6 +14917,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _heroReference: {fileID: 1054208260}
   _smoothing: 0.3
+  _xPositionMin: -35.1
+  _xPositionMax: 7.9
 --- !u!1 &527967063
 GameObject:
   m_ObjectHideFlags: 0
@@ -36910,19 +36912,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1054208277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1054208256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deca390b78d06cb4a9dd684dce6ae8b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 1054208276}
 --- !u!114 &1054208278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36937,6 +36926,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 1054208265}
   _coinCollection: {fileID: 8300000, guid: 19a5b18b079f844bba783a9ec5f32efa, type: 3}
+--- !u!114 &1054208282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054208256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0812198f06f3e434b9a35c212009a324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 1054208276}
 --- !u!1 &1296304718
 GameObject:
   m_ObjectHideFlags: 0
@@ -37173,13 +37175,13 @@ PrefabInstance:
       addedObject: {fileID: 1054208275}
     - targetCorrespondingSourceObject: {fileID: 589697428319512387, guid: 12657cce5ec251845be76aa37bba6c36, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1054208277}
-    - targetCorrespondingSourceObject: {fileID: 589697428319512387, guid: 12657cce5ec251845be76aa37bba6c36, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1054208276}
     - targetCorrespondingSourceObject: {fileID: 589697428319512387, guid: 12657cce5ec251845be76aa37bba6c36, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1054208278}
+    - targetCorrespondingSourceObject: {fileID: 589697428319512387, guid: 12657cce5ec251845be76aa37bba6c36, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1054208282}
   m_SourcePrefab: {fileID: 100100000, guid: 12657cce5ec251845be76aa37bba6c36, type: 3}
 --- !u!4 &1548582141 stripped
 Transform:
@@ -37232,9 +37234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3e15a6124a3c54a98b291419a42c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 128
+  _soundHandler: {fileID: 1054208278}
 --- !u!61 &1616978426
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -37370,7 +37370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f943fba4ddc50449fa9c187e649929, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coinPrefab: {fileID: 946790662727941637, guid: 7c87e5bac8dae9b4b84c78894d4e77e8, type: 3}
+  _coinPrefab: {fileID: -8301866162750158710, guid: 7c87e5bac8dae9b4b84c78894d4e77e8, type: 3}
   _coinsNumber: 5
   _yPositionLimit: -4.65
   _hero: {fileID: 1054208261}
