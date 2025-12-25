@@ -119,6 +119,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -126,12 +139,12 @@ TextureImporter:
       name: CharacterSheet_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 160
-        width: 16
-        height: 32
+        width: 12
+        height: 17
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,12 +160,12 @@ TextureImporter:
       name: CharacterSheet_1
       rect:
         serializedVersion: 2
-        x: 0
+        x: 3
         y: 128
-        width: 16
-        height: 32
+        width: 11
+        height: 17
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,12 +181,12 @@ TextureImporter:
       name: CharacterSheet_2
       rect:
         serializedVersion: 2
-        x: 16
+        x: 20
         y: 128
-        width: 16
-        height: 32
+        width: 10
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,12 +202,12 @@ TextureImporter:
       name: CharacterSheet_3
       rect:
         serializedVersion: 2
-        x: 32
+        x: 33
         y: 128
-        width: 16
-        height: 32
+        width: 13
+        height: 17
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -210,12 +223,12 @@ TextureImporter:
       name: CharacterSheet_4
       rect:
         serializedVersion: 2
-        x: 48
+        x: 51
         y: 128
-        width: 16
-        height: 32
+        width: 11
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,12 +244,12 @@ TextureImporter:
       name: CharacterSheet_5
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 96
-        width: 16
-        height: 32
+        width: 13
+        height: 18
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -252,12 +265,12 @@ TextureImporter:
       name: CharacterSheet_6
       rect:
         serializedVersion: 2
-        x: 16
+        x: 18
         y: 96
-        width: 16
-        height: 32
+        width: 13
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -273,12 +286,12 @@ TextureImporter:
       name: CharacterSheet_7
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 64
-        width: 16
-        height: 32
+        width: 12
+        height: 17
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -294,12 +307,12 @@ TextureImporter:
       name: CharacterSheet_8
       rect:
         serializedVersion: 2
-        x: 0
+        x: 3
         y: 32
-        width: 16
-        height: 32
+        width: 11
+        height: 17
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -315,12 +328,12 @@ TextureImporter:
       name: CharacterSheet_9
       rect:
         serializedVersion: 2
-        x: 16
+        x: 20
         y: 32
-        width: 16
-        height: 32
+        width: 10
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -336,12 +349,12 @@ TextureImporter:
       name: CharacterSheet_10
       rect:
         serializedVersion: 2
-        x: 32
+        x: 33
         y: 32
-        width: 16
-        height: 32
+        width: 13
+        height: 17
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -357,12 +370,12 @@ TextureImporter:
       name: CharacterSheet_11
       rect:
         serializedVersion: 2
-        x: 48
+        x: 51
         y: 32
-        width: 16
-        height: 32
+        width: 11
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -378,12 +391,12 @@ TextureImporter:
       name: CharacterSheet_12
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 16
-        height: 32
+        width: 13
+        height: 18
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -399,12 +412,12 @@ TextureImporter:
       name: CharacterSheet_13
       rect:
         serializedVersion: 2
-        x: 16
+        x: 18
         y: 0
-        width: 16
-        height: 32
+        width: 13
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

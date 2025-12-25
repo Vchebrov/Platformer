@@ -2,12 +2,10 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(Fliper))]
-[RequireComponent(typeof(EnemyAnimationHandler))]
+[RequireComponent(typeof(EnemyAnimationHandler), typeof(Patrol))]
+[RequireComponent(typeof(Mover))]
 public class Enemy : MonoBehaviour
 {
-    private static readonly int WalkHash = Animator.StringToHash("Walk");
-
-    [SerializeField] private Transform _eyes;
     [SerializeField] private float _speed = 1f;
 
     private Fliper _fliper;
@@ -16,8 +14,6 @@ public class Enemy : MonoBehaviour
     private EnemyAnimationHandler _enemyAnimationHandler;
     private Patrol _patrol;
     private Mover _mover;
-    private bool _currentLookToRight = true;
-    private bool _isTurning = false;
 
     private void Awake()
     {
@@ -25,38 +21,28 @@ public class Enemy : MonoBehaviour
         _fliper = GetComponent<Fliper>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _enemyAnimationHandler = GetComponent<EnemyAnimationHandler>();
-        _obstacleChecker = _eyes.GetComponent<ObstacleChecker>();
         _mover = GetComponent<Mover>();
     }
 
     private void FixedUpdate()
     {
         Vector2 movementDirection = _patrol.GetMovementDirection();
-        
-        bool newLookToRight = movementDirection.x > 0;
-        
-        if (newLookToRight != _currentLookToRight && !_isTurning)
-        {
-            StartTurn(newLookToRight);
-            return;
-        }
-        
-        if (!_isTurning)
-        {
-            _mover.Move(movementDirection.x, _speed);
-            _enemyAnimationHandler.AnimateWalk(true);
-        }
+
+        bool lookDirection = movementDirection.x > 0;
+
+        ActivateTurnAround(lookDirection);
+
+        _mover.Move(movementDirection.x, _speed);
+        _enemyAnimationHandler.AnimateWalkEnable();
     }
-    
-    private void StartTurn(bool newLookToRight)
+
+    private void ActivateTurnAround(bool newLookToRight)
     {
-        _isTurning = true;
-        _mover.StopMovement();
-        _enemyAnimationHandler.AnimateWalk(false);
-        
-        _currentLookToRight = newLookToRight;
-        _fliper.Flip(_currentLookToRight);
-        
-        _isTurning = false;
+        if (_fliper.ShouldFlip(newLookToRight))
+        {
+            _mover.StopMovement();
+            _enemyAnimationHandler.AnimateWalkDisable();
+            _fliper.Flip(newLookToRight);
+        }
     }
 }

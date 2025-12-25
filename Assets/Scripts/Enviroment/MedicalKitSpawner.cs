@@ -1,20 +1,20 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class CoinSpawner : MonoBehaviour
+public class MedicalKitSpawner : MonoBehaviour
 {
-    [SerializeField] private Coin _coinPrefab;
-    [SerializeField] private int _coinsNumber = 5;
-    [SerializeField] private float _yPositionLimit = -1f;
+    [SerializeField] private MedicalKit _medKitPrefab;
+    [SerializeField] private int _kitNumber = 2;
+    [SerializeField] private float _yPositionLimit = -3f;
     
-    private ObjectPool<Coin> _pool;
+    private ObjectPool<MedicalKit> _pool;
     private float _minSpawnXPosition = -28f;
     private float _maxSpawnXPosition = 28f;
 
     private void Awake()
     {
-        _pool = new ObjectPool<Coin>(
-            createFunc: () => InitiateCoin(),
+        _pool = new ObjectPool<MedicalKit>(
+            createFunc: () => InitiateKit(),
             actionOnGet: (obj) => ActivateCoin(obj),
             actionOnRelease: (obj) => RemoveFromScene(obj),
             actionOnDestroy: (obj) => Destroy(obj),
@@ -29,33 +29,33 @@ public class CoinSpawner : MonoBehaviour
         CreateCoins();
     }
 
-    private Coin InitiateCoin()
+    private MedicalKit InitiateKit()
     {
-        Coin coin = Instantiate(_coinPrefab);
-        coin.Collected += OnRemoveCoin;
-        return coin;
+        MedicalKit medKit = Instantiate(_medKitPrefab);
+        medKit.Collected += OnRemoveCoin;
+        return medKit;
     }
 
-    private void RemoveFromScene(Coin coin)
+    private void RemoveFromScene(MedicalKit medKit)
     {
-        coin.gameObject.SetActive(false);
-        coin.Collected -= OnRemoveCoin;
+        medKit.gameObject.SetActive(false);
+        medKit.Collected -= OnRemoveCoin;
     }
 
-    private void OnRemoveCoin(Coin coin)
+    private void OnRemoveCoin(MedicalKit medKit)
     {
-        _pool.Release(coin);
+        _pool.Release(medKit);
     }
 
     private void CreateCoins()
     {
-        for (int i = 0; i < _coinsNumber; i++)
+        for (int i = 0; i < _kitNumber; i++)
         {
             _pool.Get();
         }
     }
 
-    private void ActivateCoin(Coin obj)
+    private void ActivateCoin(MedicalKit obj)
     {
         obj.transform.position = GenerateRandomPosition();
         obj.gameObject.SetActive(true);

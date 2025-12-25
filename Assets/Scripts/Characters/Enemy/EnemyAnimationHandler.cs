@@ -6,8 +6,13 @@ public class EnemyAnimationHandler : MonoBehaviour
     
     [SerializeField] private Animator _animator;
 
-    public void AnimateWalk(bool IsOnGround)
+    public void AnimateWalkEnable()
     {
-        _animator.SetBool(WalkHash, IsOnGround);
+        _animator.SetBool(WalkHash, true);
+    }
+
+    public void AnimateWalkDisable()
+    {
+        _animator.SetBool(WalkHash, false);
     }
 }

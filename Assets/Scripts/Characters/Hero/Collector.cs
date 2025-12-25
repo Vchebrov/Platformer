@@ -12,5 +12,11 @@ public class Collector : MonoBehaviour
             _soundHandler.CollectCoin();
             coin.Collect();
         }
+        else if (collision.gameObject.TryGetComponent(out MedicalKit medKit))
+        {
+            medKit.Collect();
+        }
     }
+    
+    
 }

@@ -1,12 +1,10 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Mover), typeof(AudioSource), typeof(HeroAnimationHandler))]
 [RequireComponent(typeof(Fliper), typeof(InputReader))]
-public class Hero : MonoBehaviour {
-    
-    
+public class Hero : MonoBehaviour
+{
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _jumpForce = 10f;
 
@@ -21,10 +19,7 @@ public class Hero : MonoBehaviour {
     private HeroAnimationHandler _heroAnimationHandler;
     private SoundHandler _soundHandler;
 
-    private bool _lookToRight = true;
-    private bool _isOnGround = true;
     private bool _isSoundOn = false;
-
 
     private WaitForSeconds _stepDelay;
     private float _delay = 0.3f;
@@ -41,14 +36,11 @@ public class Hero : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if (_isOnGround)
-        {
-            _heroAnimationHandler.AnimateJump(!_isOnGround);
-        }
-
         HandleMove(_inputReader.Direction);
 
-        Jump();
+        TryToJump();
+
+        HandleAttack();
 
         if (_inputReader.Direction != 0 && _groundDetector.IsOnGround && !_isSoundOn)
         {
@@ -59,41 +51,69 @@ public class Hero : MonoBehaviour {
     private void HandleMove(float direction)
     {
         _mover.Move(direction, _speed);
-        _heroAnimationHandler.AnimateWalk(direction != 0 && _groundDetector.IsOnGround);
 
-
-        if (direction > 0 && !_lookToRight)
+        if (direction != 0 && _groundDetector.IsOnGround)
         {
-            _lookToRight = !_lookToRight;
-            _fliper.Flip(_lookToRight);
+            _heroAnimationHandler.AnimateWalkEnable();
         }
-        else if (direction < 0 && _lookToRight)
+        else
         {
-            _lookToRight = !_lookToRight;
-            _fliper.Flip(_lookToRight);
+            _heroAnimationHandler.AnimateWalkDisable();
+        }
+
+        bool lookToRight = direction > 0;
+
+        if (direction > 0 | direction < 0)
+        {
+            ActivateTurnAround(lookToRight);
         }
     }
 
-    private void Jump()
+    private void ActivateTurnAround(bool actualLook)
+    {
+        if (_fliper.ShouldFlip(actualLook))
+        {
+            _heroAnimationHandler.AnimateWalkDisable();
+            _fliper.Flip(actualLook);
+        }
+    }
+
+    private void TryToJump()
     {
         if (_inputReader.GetIsJump() && _groundDetector.IsOnGround)
         {
             _mover.Jump(_jumpForce);
-            _heroAnimationHandler.AnimateJump(true);
+            _heroAnimationHandler.AnimateJumpEnable();
+        }
+        else
+        {
+            _heroAnimationHandler.AnimateJumpDisable();
+        }
+    }
+
+    private void HandleAttack()
+    {
+        if (_inputReader.GetAttack())
+        {
+            _heroAnimationHandler.AnimateAttackEnable();
+        }
+        else
+        {
+            _heroAnimationHandler.AnimateAttackDisable();
         }
     }
 
     private IEnumerator PlayStepSound()
     {
         _isSoundOn = true;
-        
+
         _soundHandler.PlaySound(_stepSoundLeft);
         yield return _stepDelay;
-        
+
         _soundHandler.PlaySound(_stepSoundRight);
-        
+
         yield return _stepDelay;
-    
+
         _isSoundOn = false;
     }
 }
