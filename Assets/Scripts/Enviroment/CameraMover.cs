@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraMover : MonoBehaviour
@@ -33,6 +31,4 @@ public class CameraMover : MonoBehaviour
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, _smoothing);
     }
-
-  
 }

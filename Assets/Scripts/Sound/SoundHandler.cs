@@ -7,9 +7,9 @@ public class SoundHandler : MonoBehaviour
     
     private WaitForSeconds _stepDelay;
 
-    public void PlaySound(AudioClip stepSound)
+    public void PlaySound(AudioClip sound)
     {
-        _audioSource.PlayOneShot(stepSound);
+        _audioSource.PlayOneShot(sound);
     }
 
     public void CollectCoin()

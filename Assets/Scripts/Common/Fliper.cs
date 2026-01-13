@@ -17,7 +17,7 @@ public class Fliper : MonoBehaviour
         if (faceRight != _lookToRight)
         {
             transform.rotation = faceRight ? _faceRight : _faceLeft;
-            _lookToRight = !_lookToRight;
+            _lookToRight = faceRight;
         }
     }
 

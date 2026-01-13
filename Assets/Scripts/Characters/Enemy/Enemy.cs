@@ -1,39 +1,73 @@
-using System.Runtime.CompilerServices;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(Fliper))]
 [RequireComponent(typeof(EnemyAnimationHandler), typeof(Patrol))]
 [RequireComponent(typeof(Mover))]
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable
 {
+    [Header("Parameters")]
     [SerializeField] private float _speed = 1f;
+    [SerializeField] private float _chaseSpeed = 5f;
+    [SerializeField] private Attacker _attacker;
+    [SerializeField] private float _delay = 1f;
+    [SerializeField] private float _deathAnimationDelay = 1.2f;
 
+    [Header("External components")]
+    [SerializeField] private Sword _sword;
+    [SerializeField] private Health _health;
+    
     private Fliper _fliper;
-    private Rigidbody2D _rigidbody2D;
     private ObstacleChecker _obstacleChecker;
     private EnemyAnimationHandler _enemyAnimationHandler;
     private Patrol _patrol;
     private Mover _mover;
+    private WaitForSeconds _attackDelay;
+    private Coroutine _attackCoroutine;
 
     private void Awake()
     {
         _patrol = GetComponent<Patrol>();
         _fliper = GetComponent<Fliper>();
-        _rigidbody2D = GetComponent<Rigidbody2D>();
         _enemyAnimationHandler = GetComponent<EnemyAnimationHandler>();
         _mover = GetComponent<Mover>();
+        _attackDelay = new WaitForSeconds(_delay);
+    }
+
+    private void OnEnable()
+    {
+        _sword.SwordHit += OnSwordHit;
+        _health.Died += OnDied;
+    }
+
+    private void OnDisable()
+    {
+        _sword.SwordHit -= OnSwordHit;
+        _health.Died -= OnDied;
     }
 
     private void FixedUpdate()
     {
-        Vector2 movementDirection = _patrol.GetMovementDirection();
+        Transform target = _patrol.GetTargetPosition();
 
-        bool lookDirection = movementDirection.x > 0;
+        if (target)
+        {
+            ChaseHero(target);
+        }
+        else
+        {
+            Patroling();
+        }
+    }
 
-        ActivateTurnAround(lookDirection);
+    public void TakeDamage(float damage)
+    {
+        _health.TakeDamage(damage);
+    }
 
-        _mover.Move(movementDirection.x, _speed);
-        _enemyAnimationHandler.AnimateWalkEnable();
+    private void OnSwordHit()
+    {
+        _attacker.Attack();
     }
 
     private void ActivateTurnAround(bool newLookToRight)
@@ -44,5 +78,73 @@ public class Enemy : MonoBehaviour
             _enemyAnimationHandler.AnimateWalkDisable();
             _fliper.Flip(newLookToRight);
         }
+    }
+
+    private void Patroling()
+    {
+        _enemyAnimationHandler.AnimateRunDisable();
+
+        Vector2 movementDirection = _patrol.GetMovementDirection();
+        bool lookDirection = movementDirection.x > 0;
+
+        ActivateTurnAround(lookDirection);
+        _mover.Move(movementDirection.x, _speed);
+        _enemyAnimationHandler.AnimateWalkEnable();
+    }
+
+    private void ChaseHero(Transform target)
+    {
+        _enemyAnimationHandler.AnimateWalkDisable();
+        _enemyAnimationHandler.AnimateRunEnable();
+        Vector2 direction = (target.position - transform.position).normalized;
+        bool lookDirection = direction.x > 0;
+        ActivateTurnAround(lookDirection);
+
+        if (_patrol.CanAttack())
+        {
+            _enemyAnimationHandler.AnimateRunDisable();
+            if (_attackCoroutine == null)
+            {
+                _attackCoroutine = StartCoroutine(AttackRoutine(target));
+            }
+        }
+        else
+        {
+            if (_attackCoroutine != null)
+            {
+                StopCoroutine(_attackCoroutine);
+                _attackCoroutine = null;
+                _enemyAnimationHandler.AnimateAttackDisable();
+            }
+
+            _mover.Move(direction.x, _chaseSpeed);
+        }
+    }
+
+    private IEnumerator AttackRoutine(Transform target)
+    {
+        while (_patrol.CanAttack() && target != null)
+        {
+            _enemyAnimationHandler.AnimateAttackEnable();
+            yield return _attackDelay;
+            _enemyAnimationHandler.AnimateAttackDisable();
+            yield return null; 
+        }
+        
+        _enemyAnimationHandler.AnimateAttackDisable();
+        _attackCoroutine = null;
+    }
+
+    private void OnDied()
+    {
+        _enemyAnimationHandler.DisableAllAnimations();
+        _enemyAnimationHandler.AnimateDeathEnable();
+        StartCoroutine(DelayedDestroy());
+    }
+    
+    private IEnumerator DelayedDestroy()
+    {
+        yield return new WaitForSeconds(_deathAnimationDelay);
+        Destroy(gameObject);
     }
 }

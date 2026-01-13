@@ -3,15 +3,24 @@ using UnityEngine;
 
 [RequireComponent(typeof(Mover), typeof(AudioSource), typeof(HeroAnimationHandler))]
 [RequireComponent(typeof(Fliper), typeof(InputReader))]
-public class Hero : MonoBehaviour
+public class Hero : MonoBehaviour, IDamageable
 {
+    [Header("Parameters")]
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _jumpForce = 10f;
-
-    [SerializeField] private Collector _collector;
+    
+    [Header("Sounds")]
     [SerializeField] private AudioClip _stepSoundLeft;
     [SerializeField] private AudioClip _stepSoundRight;
+    [SerializeField] private AudioClip _damageSound;
+    
+    [Header("External components")]
+    [SerializeField] private Collector _collector;
     [SerializeField] private GroundDetector _groundDetector;
+    [SerializeField] private Attacker _attacker;
+    [SerializeField] private PunchEffect _punchEffect;
+    [SerializeField] Health _health;
+    
 
     private InputReader _inputReader;
     private Mover _mover;
@@ -34,6 +43,16 @@ public class Hero : MonoBehaviour
         _soundHandler = GetComponent<SoundHandler>();
     }
 
+    private void OnEnable()
+    {
+        _health.Died += OnDestroy;
+    }
+
+    private void OnDisable()
+    {
+        _health.Died -= OnDestroy;
+    }
+
     private void FixedUpdate()
     {
         HandleMove(_inputReader.Direction);
@@ -46,6 +65,12 @@ public class Hero : MonoBehaviour
         {
             StartCoroutine(PlayStepSound());
         }
+    }
+    
+    public void TakeDamage(float damage)
+    {
+        _soundHandler.PlaySound(_damageSound);
+        _health.TakeDamage(damage);
     }
 
     private void HandleMove(float direction)
@@ -96,6 +121,8 @@ public class Hero : MonoBehaviour
         if (_inputReader.GetAttack())
         {
             _heroAnimationHandler.AnimateAttackEnable();
+            _attacker.Attack();
+            _punchEffect.Create();
         }
         else
         {
@@ -115,5 +142,10 @@ public class Hero : MonoBehaviour
         yield return _stepDelay;
 
         _isSoundOn = false;
+    }
+
+    private void OnDestroy()
+    {
+        gameObject.SetActive(false);
     }
 }
