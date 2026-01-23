@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class Patrol : MonoBehaviour
+public class EnemyBehaviorHandler : MonoBehaviour
 {
     [SerializeField] private ObstacleChecker _obstacleChecker;
     [SerializeField] private TargetDetector _targetDetector;

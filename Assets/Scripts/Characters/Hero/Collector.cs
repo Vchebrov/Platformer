@@ -5,9 +5,14 @@ public class Collector : MonoBehaviour
 {
     [SerializeField] private SoundHandler _soundHandler;
     [SerializeField] private Health _health;
-    [SerializeField] private float _maxHealth = 100f;
+    [SerializeField] private float _maxHealth;
     
     public event Action<MedicalKit> Taken;
+
+    private void Awake()
+    {
+        _maxHealth = _health.MaxHitPoints;
+    }
     
     private void OnTriggerEnter2D(Collider2D collision)
     {

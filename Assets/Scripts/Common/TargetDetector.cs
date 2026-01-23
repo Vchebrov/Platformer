@@ -4,8 +4,17 @@ public class TargetDetector : MonoBehaviour
 {
     [SerializeField] private LayerMask _targetMask;
     [SerializeField] private Transform _target;
-    [SerializeField] private float _stopDistance = 10f;
-    [SerializeField, Min(0)] private float _range = 2;
+    [SerializeField, Min(0)] private float _range = 4;
+   
+    public static float SqrDistance(Vector2 start, Vector2 end)
+    {
+        return (end - start).sqrMagnitude;
+    }
+
+    public static bool IsEnoughClose(Vector2 start, Vector2 end, float distance)
+    {
+        return SqrDistance(start, end) <= distance * distance;
+    }
 
     public Transform GetTarget()
     {
@@ -19,7 +28,7 @@ public class TargetDetector : MonoBehaviour
 
     public bool CanChase()
     {
-        return Vector2.Distance(_target.position, transform.position) < _stopDistance;
+        return IsEnoughClose(transform.position, _target.position, _range);
     }
 
     public IDamageable DefineTarget()
@@ -36,7 +45,6 @@ public class TargetDetector : MonoBehaviour
 
     public float GetDistance()
     {
-        return Vector2.Distance(transform.position, _target.position);
+        return SqrDistance(transform.position, _target.position);
     }
 }
-

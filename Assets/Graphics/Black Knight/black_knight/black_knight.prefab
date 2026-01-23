@@ -1991,7 +1991,7 @@ MonoBehaviour:
   _chaseSpeed: 4
   _attacker: {fileID: 324867574745502764}
   _delay: 1
-  _deathAnimationDelay: 1.2
+  _deathAnimationDelay: 2
   _sword: {fileID: 6404050338719634240}
   _health: {fileID: 3379948458939086920}
 --- !u!70 &3315938655218100363
@@ -5568,7 +5568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edbab17546114884bf37db988f4173a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 30
+  _maxHitPoints: 20
   _collector: {fileID: 0}
 --- !u!114 &1606017575958949326
 MonoBehaviour:
@@ -5739,5 +5739,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _target: {fileID: 0}
-  _stopDistance: 6
-  _range: 2
+  _stopDistance: 10
+  _range: 4

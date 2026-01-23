@@ -425,8 +425,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d079f1a20d71b684286b084dfdb812a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _medKitPrefab: {fileID: 5896890898639851219, guid: cf0de5c501e3f984e965cc136574b028, type: 3}
-  _kitNumber: 2
+  _prefab: {fileID: 4969074253740785592, guid: cf0de5c501e3f984e965cc136574b028, type: 3}
+  _instanceCount: 2
   _yPositionLimit: -1
 --- !u!1001 &469647549
 PrefabInstance:
@@ -487,6 +487,10 @@ PrefabInstance:
     - target: {fileID: 3379948458939086920, guid: ddb8dec8e9dcf304fa398c7cc1bcd40a, type: 3}
       propertyPath: _health
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3379948458939086920, guid: ddb8dec8e9dcf304fa398c7cc1bcd40a, type: 3}
+      propertyPath: _maxHealth
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6673063406997181639, guid: ddb8dec8e9dcf304fa398c7cc1bcd40a, type: 3}
       propertyPath: _target
@@ -15074,7 +15078,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   _target: {fileID: 0}
-  _stopDistance: 10
   _range: 2
 --- !u!1 &968571625
 GameObject:
@@ -37360,9 +37363,6 @@ PrefabInstance:
       addedObject: {fileID: 799556456}
     - targetCorrespondingSourceObject: {fileID: 1155511164202898400, guid: 12657cce5ec251845be76aa37bba6c36, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1763873967}
-    - targetCorrespondingSourceObject: {fileID: 1155511164202898400, guid: 12657cce5ec251845be76aa37bba6c36, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 968571626}
     - targetCorrespondingSourceObject: {fileID: 1155511164202898400, guid: 12657cce5ec251845be76aa37bba6c36, type: 3}
       insertIndex: -1
@@ -37714,6 +37714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _soundHandler: {fileID: 1054208278}
   _health: {fileID: 2045603251}
+  _maxHealth: 30
 --- !u!61 &1616978426
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -37786,52 +37787,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1 &1763873966
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1763873967}
-  - component: {fileID: 1763873968}
-  m_Layer: 6
-  m_Name: Health
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1763873967
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1763873966}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1054208260}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1763873968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1763873966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edbab17546114884bf37db988f4173a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 100
-  _collector: {fileID: 0}
 --- !u!1 &1888613954
 GameObject:
   m_ObjectHideFlags: 0
@@ -37908,7 +37863,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2009839739}
-  - component: {fileID: 2009839738}
+  - component: {fileID: 2009839740}
   m_Layer: 0
   m_Name: Coins
   m_TagString: Untagged
@@ -37916,21 +37871,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2009839738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009839737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20f943fba4ddc50449fa9c187e649929, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _coinPrefab: {fileID: -8301866162750158710, guid: 7c87e5bac8dae9b4b84c78894d4e77e8, type: 3}
-  _coinsNumber: 5
-  _yPositionLimit: -4.65
 --- !u!4 &2009839739
 Transform:
   m_ObjectHideFlags: 0
@@ -37946,6 +37886,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1930625595}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2009839740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009839737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d079f1a20d71b684286b084dfdb812a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 946790662727941637, guid: 7c87e5bac8dae9b4b84c78894d4e77e8, type: 3}
+  _instanceCount: 5
+  _yPositionLimit: -2
 --- !u!1 &2045603249
 GameObject:
   m_ObjectHideFlags: 0
@@ -37991,7 +37946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edbab17546114884bf37db988f4173a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _maxHitPoints: 30
   _collector: {fileID: 1616978425}
 --- !u!114 &2045603252
 MonoBehaviour:

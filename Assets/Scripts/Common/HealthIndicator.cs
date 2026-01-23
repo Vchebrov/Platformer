@@ -16,6 +16,7 @@ public class HealthIndicator : MonoBehaviour
     private void OnDisable()
     {
         _health.InitialHealthSet -= OnInitialHealthValue;
+        _health.HealthChanged -= OnUpdateHealthValue;
     }
 
     private void OnInitialHealthValue(float health)

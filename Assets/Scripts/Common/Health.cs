@@ -3,21 +3,22 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float _maxHealth = 100f;
+    [SerializeField] private float _maxHitPoints = 100f;
     [SerializeField] private Collector _collector;
 
-    private float _health;
+    private float _hitPoints;
     
-    public float HitPoints => _health;
+    public float HitPoints => _hitPoints;
+    public float MaxHitPoints => _maxHitPoints;
     
     public event Action<float> HealthChanged;
     public event Action<float> InitialHealthSet;
     public event Action Died;
 
-    private void Awake()
+    private void Start()
     {
-        _health = _maxHealth;
-        InitialHealthSet?.Invoke(_health);
+        _hitPoints = _maxHitPoints;
+        InitialHealthSet?.Invoke(_hitPoints);
     }
 
     private void OnEnable()
@@ -30,20 +31,27 @@ public class Health : MonoBehaviour
         UnsubscribeFromCollector();
     }
 
-    private void Update()
-    {
-        if (_health <= 0)
-        {
-            _health = 0;
-            Died?.Invoke();
-        }
-    }
-
     public void TakeDamage(float damage)
     {
-        _health -= damage;
-
-        HealthChanged?.Invoke(_health);
+        if (damage < 0f)
+        {
+            Debug.Log("Урон не может быть отрицательным. Текущее значение: " + damage);
+            return;
+        }
+       
+        _hitPoints -= damage;
+        
+        if (_hitPoints < 0f)
+        {
+            _hitPoints = 0f;
+        }
+        
+        HealthChanged?.Invoke(_hitPoints);
+        
+        if (_hitPoints == 0f)
+        {
+            Died?.Invoke();
+        }
     }
 
     private void SubscribeToCollector()
@@ -64,14 +72,13 @@ public class Health : MonoBehaviour
 
     private void OnGetHealing(MedicalKit medicalKit)
     {
-        if (_health >= _maxHealth)
+        _hitPoints += medicalKit.HealingValue;
+        
+        if (_hitPoints >= _maxHitPoints)
         {
-            _health = _maxHealth;
+            _hitPoints = _maxHitPoints;
         }
-        else
-        {
-            _health += medicalKit.HealingValue;
-            HealthChanged?.Invoke(_health);
-        }
+        
+            HealthChanged?.Invoke(_hitPoints);
     }
 }

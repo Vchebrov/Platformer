@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(Fliper))]
-[RequireComponent(typeof(EnemyAnimationHandler), typeof(Patrol))]
+[RequireComponent(typeof(EnemyAnimationHandler), typeof(EnemyBehaviorHandler))]
 [RequireComponent(typeof(Mover))]
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private float _chaseSpeed = 5f;
     [SerializeField] private Attacker _attacker;
     [SerializeField] private float _delay = 1f;
-    [SerializeField] private float _deathAnimationDelay = 1.2f;
+    [SerializeField] private float _deathAnimationDelay = 2f;
 
     [Header("External components")]
     [SerializeField] private Sword _sword;
@@ -20,14 +20,14 @@ public class Enemy : MonoBehaviour, IDamageable
     private Fliper _fliper;
     private ObstacleChecker _obstacleChecker;
     private EnemyAnimationHandler _enemyAnimationHandler;
-    private Patrol _patrol;
+    private EnemyBehaviorHandler _enemyBehaviorHandler;
     private Mover _mover;
     private WaitForSeconds _attackDelay;
     private Coroutine _attackCoroutine;
 
     private void Awake()
     {
-        _patrol = GetComponent<Patrol>();
+        _enemyBehaviorHandler = GetComponent<EnemyBehaviorHandler>();
         _fliper = GetComponent<Fliper>();
         _enemyAnimationHandler = GetComponent<EnemyAnimationHandler>();
         _mover = GetComponent<Mover>();
@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
-        Transform target = _patrol.GetTargetPosition();
+        Transform target = _enemyBehaviorHandler.GetTargetPosition();
 
         if (target)
         {
@@ -84,7 +84,7 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         _enemyAnimationHandler.AnimateRunDisable();
 
-        Vector2 movementDirection = _patrol.GetMovementDirection();
+        Vector2 movementDirection = _enemyBehaviorHandler.GetMovementDirection();
         bool lookDirection = movementDirection.x > 0;
 
         ActivateTurnAround(lookDirection);
@@ -100,7 +100,7 @@ public class Enemy : MonoBehaviour, IDamageable
         bool lookDirection = direction.x > 0;
         ActivateTurnAround(lookDirection);
 
-        if (_patrol.CanAttack())
+        if (_enemyBehaviorHandler.CanAttack())
         {
             _enemyAnimationHandler.AnimateRunDisable();
             if (_attackCoroutine == null)
@@ -123,7 +123,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private IEnumerator AttackRoutine(Transform target)
     {
-        while (_patrol.CanAttack() && target != null)
+        while (_enemyBehaviorHandler.CanAttack() && target != null)
         {
             _enemyAnimationHandler.AnimateAttackEnable();
             yield return _attackDelay;
