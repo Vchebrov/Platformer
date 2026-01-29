@@ -21,7 +21,6 @@ public class Hero : MonoBehaviour, IDamageable
     [SerializeField] private PunchEffect _punchEffect;
     [SerializeField] Health _health;
     
-
     private InputReader _inputReader;
     private Mover _mover;
     private Fliper _fliper;
@@ -46,11 +45,13 @@ public class Hero : MonoBehaviour, IDamageable
     private void OnEnable()
     {
         _health.Died += OnDestroy;
+        _collector.Taken += OnGetHealing;
     }
 
     private void OnDisable()
     {
         _health.Died -= OnDestroy;
+        _collector.Taken -= OnGetHealing;
     }
 
     private void FixedUpdate()
@@ -148,4 +149,10 @@ public class Hero : MonoBehaviour, IDamageable
     {
         gameObject.SetActive(false);
     }
+    
+    private void OnGetHealing(MedicalKit medicalKit)
+    {
+        _health.GetHealing(medicalKit);
+    }
+    
 }

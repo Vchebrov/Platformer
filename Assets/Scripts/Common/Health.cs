@@ -4,7 +4,6 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField] private float _maxHitPoints = 100f;
-    [SerializeField] private Collector _collector;
 
     private float _hitPoints;
     
@@ -19,16 +18,6 @@ public class Health : MonoBehaviour
     {
         _hitPoints = _maxHitPoints;
         InitialHealthSet?.Invoke(_hitPoints);
-    }
-
-    private void OnEnable()
-    {
-        SubscribeToCollector();
-    }
-
-    private void OnDisable()
-    {
-        UnsubscribeFromCollector();
     }
 
     public void TakeDamage(float damage)
@@ -53,24 +42,8 @@ public class Health : MonoBehaviour
             Died?.Invoke();
         }
     }
-
-    private void SubscribeToCollector()
-    {
-        if (_collector != null)
-        {
-            _collector.Taken += OnGetHealing;
-        }
-    }
     
-    private void UnsubscribeFromCollector()
-    {
-        if (_collector != null)
-        {
-            _collector.Taken -= OnGetHealing;
-        }
-    }
-
-    private void OnGetHealing(MedicalKit medicalKit)
+    public void GetHealing(MedicalKit medicalKit)
     {
         _hitPoints += medicalKit.HealingValue;
         
@@ -79,6 +52,6 @@ public class Health : MonoBehaviour
             _hitPoints = _maxHitPoints;
         }
         
-            HealthChanged?.Invoke(_hitPoints);
+        HealthChanged?.Invoke(_hitPoints);
     }
 }

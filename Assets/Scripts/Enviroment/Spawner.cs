@@ -93,8 +93,6 @@ public class Spawner : MonoBehaviour
     private Vector2 GenerateRandomPosition()
     {
         return new Vector2(
-            Random.Range(_minSpawnXPosition, _maxSpawnXPosition),
-            _yPositionLimit
-        );
+            Random.Range(_minSpawnXPosition, _maxSpawnXPosition), _yPositionLimit);
     }
 }
