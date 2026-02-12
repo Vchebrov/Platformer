@@ -11,6 +11,7 @@ public class Attacker : MonoBehaviour
         IDamageable target = _detector.DefineTarget();
         if (target != null)
         {
+            Debug.Log($"{target} hit");
             target.TakeDamage(_attackDamage);
         }
     }

@@ -6,18 +6,26 @@ public class Health : MonoBehaviour
     [SerializeField] private float _maxHitPoints = 100f;
 
     private float _hitPoints;
-    
+
     public float HitPoints => _hitPoints;
     public float MaxHitPoints => _maxHitPoints;
-    
-    public event Action<float> HealthChanged;
-    public event Action<float> InitialHealthSet;
+
+    public event Action<float> ValueChanged;
+    public event Action<float> InitialValueSet;
     public event Action Died;
 
     private void Start()
     {
         _hitPoints = _maxHitPoints;
-        InitialHealthSet?.Invoke(_hitPoints);
+        InitialValueSet?.Invoke(_hitPoints);
+    }
+
+    private void Update()
+    {
+        if (_hitPoints == 0f)
+        {
+            Died?.Invoke();
+        }
     }
 
     public void TakeDamage(float damage)
@@ -27,31 +35,26 @@ public class Health : MonoBehaviour
             Debug.Log("Урон не может быть отрицательным. Текущее значение: " + damage);
             return;
         }
-       
+
         _hitPoints -= damage;
-        
+
         if (_hitPoints < 0f)
         {
             _hitPoints = 0f;
         }
-        
-        HealthChanged?.Invoke(_hitPoints);
-        
-        if (_hitPoints == 0f)
-        {
-            Died?.Invoke();
-        }
+
+        ValueChanged?.Invoke(_hitPoints);
     }
-    
-    public void GetHealing(MedicalKit medicalKit)
+
+    public void Heal(float amount)
     {
-        _hitPoints += medicalKit.HealingValue;
-        
+        _hitPoints += amount;
+
         if (_hitPoints >= _maxHitPoints)
         {
             _hitPoints = _maxHitPoints;
         }
-        
-        HealthChanged?.Invoke(_hitPoints);
+
+        ValueChanged?.Invoke(_hitPoints);
     }
 }

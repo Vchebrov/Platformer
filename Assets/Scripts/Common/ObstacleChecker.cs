@@ -5,7 +5,7 @@ public class ObstacleChecker : MonoBehaviour
     [SerializeField] private LayerMask _obstacleLayer;
     [SerializeField] private float _wallCheckDistance = 1.5f;
     
-    public bool CheckAhead(bool lookSide)
+    public bool SeePathAhead(bool lookSide)
     {
         Vector2 rayDirection = (lookSide ? Vector2.right : Vector2.left);
         rayDirection.Normalize();

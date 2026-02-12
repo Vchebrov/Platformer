@@ -9,7 +9,7 @@ public class Sword : MonoBehaviour
     {
         if (!collision.gameObject.TryGetComponent(out Hero hero))
             return;
-        
+
         SwordHit?.Invoke();
     }
 }

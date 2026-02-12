@@ -1,25 +1,43 @@
-﻿using UnityEngine;
+﻿
 
-namespace FSM
+using UnityEngine;
+
+namespace FSM_for_test
 {
-    public class AttackState : State
+    public class AttackState : IState
     {
-        public override void Enter()
+        private Sword _sword;
+        private Attacker _attacker;
+        private EnemyAnimationHandler _animationHandler;
+
+        public AttackState(Sword sword, Attacker attacker, EnemyAnimationHandler animationHandler)
         {
-            base.Enter();
-            Debug.Log("Entering AttackState");
+            _sword = sword;
+            _attacker = attacker;
+            _animationHandler = animationHandler;
+        }
+        
+        public void Enter()
+        {
+            _sword.SwordHit += OnSwordHit;
+            _animationHandler.AnimateAttackEnable();
         }
 
-        public override void Exit()
+        public void Exit()
         {
-            base.Exit();
-            Debug.Log("Exiting AttackState");
+            _animationHandler.AnimateAttackDisable();
+            _sword.SwordHit -= OnSwordHit;
         }
 
-        public override void Update()
+        public void Update()
         {
-            base.Update();
-            Debug.Log("Updating attack state");
+           
+        }
+        
+        private void OnSwordHit()
+        {
+            Debug.Log("Hit");
+            _attacker.Attack();
         }
     }
 }

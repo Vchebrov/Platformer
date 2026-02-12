@@ -9,22 +9,22 @@ public class HealthIndicator : MonoBehaviour
     
     private void OnEnable()
     {
-        _health.InitialHealthSet += OnInitialHealthValue;
-        _health.HealthChanged += OnUpdateHealthValue;
+        _health.InitialValueSet += OnInitialValueValue;
+        _health.ValueChanged += OnUpdateValueValue;
     }
 
     private void OnDisable()
     {
-        _health.InitialHealthSet -= OnInitialHealthValue;
-        _health.HealthChanged -= OnUpdateHealthValue;
+        _health.InitialValueSet -= OnInitialValueValue;
+        _health.ValueChanged -= OnUpdateValueValue;
     }
 
-    private void OnInitialHealthValue(float health)
+    private void OnInitialValueValue(float health)
     {
         _healthIndicator.text = health.ToString();
     }
 
-    private void OnUpdateHealthValue(float health)
+    private void OnUpdateValueValue(float health)
     {
         _healthIndicator.text = health.ToString();
     }

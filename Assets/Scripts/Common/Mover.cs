@@ -23,5 +23,4 @@ public class Mover : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
-    
 }

@@ -68,6 +68,11 @@ public class Hero : MonoBehaviour, IDamageable
         }
     }
     
+    private void OnDestroy()
+    {
+        gameObject.SetActive(false);
+    }
+    
     public void TakeDamage(float damage)
     {
         _soundHandler.PlaySound(_damageSound);
@@ -144,15 +149,10 @@ public class Hero : MonoBehaviour, IDamageable
 
         _isSoundOn = false;
     }
-
-    private void OnDestroy()
-    {
-        gameObject.SetActive(false);
-    }
     
     private void OnGetHealing(MedicalKit medicalKit)
     {
-        _health.GetHealing(medicalKit);
+        _health.Heal(medicalKit.HealingValue);
     }
     
 }
