@@ -4108,9 +4108,8 @@ GameObject:
   - component: {fileID: 3129915264106423139}
   - component: {fileID: 13535564009644261}
   - component: {fileID: 3263278708789190023}
-  - component: {fileID: 2825194735805749278}
   - component: {fileID: 7345753400917446901}
-  - component: {fileID: 7905620293849436890}
+  - component: {fileID: 5484218132804477077}
   m_Layer: 9
   m_Name: black_knight
   m_TagString: Untagged
@@ -4369,26 +4368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc896eefe8e64ff47aa9a0541547092e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2825194735805749278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3870160730172884344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7a8c0d16b84b4a4bab95587ecd9e2ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _targetDetector: {fileID: 7578824784594912311}
-  _sword: {fileID: 7884077774423966640}
-  _mover: {fileID: 3263278708789190023}
-  _fliper: {fileID: 6229979458036199899}
-  _obstacleChecker: {fileID: 7116675257547530008}
-  _animationHandler: {fileID: 13535564009644261}
-  _attacker: {fileID: 3545518704440820956}
-  _health: {fileID: 1968603120870893752}
 --- !u!114 &7345753400917446901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4401,7 +4380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71962d425e178e84398fd811f9d0f817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7905620293849436890
+--- !u!114 &5484218132804477077
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4413,9 +4392,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27cc409764d63bf45a41d3d9ae82f4a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackRange: 2
   _deathAnimationDelay: 2
+  _targetDetector: {fileID: 7578824784594912311}
+  _sword: {fileID: 7884077774423966640}
+  _mover: {fileID: 3263278708789190023}
+  _fliper: {fileID: 6229979458036199899}
+  _obstacleChecker: {fileID: 7116675257547530008}
+  _animationHandler: {fileID: 13535564009644261}
+  _attacker: {fileID: 3545518704440820956}
   _health: {fileID: 1968603120870893752}
-  _enemyAnimationHandler: {fileID: 13535564009644261}
 --- !u!1 &3870160730189076836
 GameObject:
   m_ObjectHideFlags: 0

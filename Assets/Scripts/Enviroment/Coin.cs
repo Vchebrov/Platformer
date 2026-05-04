@@ -1,18 +1,12 @@
 using System;
-
+using Enviroment;
 using UnityEngine;
 
-public class Coin : MonoBehaviour, ICollectible
+public class Coin : ItemsToCollect
 {
-    public event Action<ICollectible> Collected;
-    
-    public void Collect()
+    public override void Collect()
     {
-        Collected?.Invoke(this);
-    }
-
-    public Transform GetTransform()
-    {
-        return transform;
+        Debug.Log("Coin collected");
+        base.Collect();
     }
 }

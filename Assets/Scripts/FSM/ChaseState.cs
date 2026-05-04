@@ -5,6 +5,7 @@ namespace FSM_for_test
     public class ChaseState : IState
     {
         private Transform _target;
+        private TargetDetector _targetDetector; 
         private Fliper _fliper;
         private Mover _mover;
         private EnemyAnimationHandler _animationHandler;
@@ -12,21 +13,23 @@ namespace FSM_for_test
 
         private float _chaseSpeed = 5f;
 
-        public ChaseState(Mover mover, Fliper fliper, EnemyAnimationHandler animationHandler, Transform transform)
+        public ChaseState(
+            Mover mover, 
+            Fliper fliper, 
+            EnemyAnimationHandler animationHandler, 
+            Transform transform,
+            TargetDetector targetDetector)  
         {
-            _fliper = fliper;
             _mover = mover;
+            _fliper = fliper;
             _animationHandler = animationHandler;
             _selfTransform = transform;
-        }
-
-        public void GetTarget(Transform target)
-        {
-            _target = target;
+            _targetDetector = targetDetector;
         }
 
         public void Enter()
         {
+            _target = _targetDetector.GetTarget();
             _animationHandler.AnimateRunEnable();
         }
 
@@ -39,23 +42,17 @@ namespace FSM_for_test
         {
             Chase();
         }
-
+        
         private void Chase()
         {
+            if (_target == null) return;
+
             Vector2 direction = (_target.position - _selfTransform.position).normalized;
             bool lookDirection = direction.x > 0;
-            ActivateTurnAround(lookDirection);
+            
+            _fliper.TryFlip(lookDirection, _mover, shouldStop: false);
 
             _mover.Move(direction.x, _chaseSpeed);
-        }
-
-        // TODO: relocate ActivateTurnAround to separate class for this and Patroling scripts.
-        private void ActivateTurnAround(bool newLookToRight)
-        {
-            if (_fliper.ShouldFlip(newLookToRight))
-            {
-                _fliper.Flip(newLookToRight);
-            }
         }
     }
 }

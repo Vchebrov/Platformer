@@ -25,4 +25,16 @@ public class Fliper : MonoBehaviour
     {
         return lookDirection != _lookToRight;
     }
+    
+    public void TryFlip(bool newLookToRight, Mover mover, bool shouldStop = false)
+    {
+        if (ShouldFlip(newLookToRight))
+        {
+            if (shouldStop && mover != null)
+            {
+                mover.StopMovement();
+            }
+            Flip(newLookToRight);
+        }
+    }
 }

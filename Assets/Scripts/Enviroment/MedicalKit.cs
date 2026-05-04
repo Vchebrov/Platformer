@@ -1,21 +1,16 @@
 using System;
+using Enviroment;
 using UnityEngine;
 
-public class MedicalKit : MonoBehaviour, ICollectible
+public class MedicalKit : ItemsToCollect
 {
     [SerializeField] private float _healingValue = 10f;
     
     public float HealingValue => _healingValue;
     
-    public event Action<ICollectible> Collected;
-    
-    public void Collect()
+    public override void Collect()
     {
-        Collected?.Invoke(this);
-    }
-
-    public Transform GetTransform()
-    {
-        return transform;
+        Debug.Log("MedKit: " + _healingValue);
+        base.Collect();
     }
 }

@@ -7,10 +7,8 @@ namespace FSM_for_test
     {
         private EnemyAnimationHandler _animationHandler;
         private Health _health;
-        private Transform _obj;
-        private float _deathAnimationDelay = 2f;
-
-        public DeathState(EnemyAnimationHandler animationHandler, Health health, Transform obj)
+        
+        public DeathState(EnemyAnimationHandler animationHandler, Health health)
         {
             _animationHandler = animationHandler;
             _health = health;
@@ -18,22 +16,13 @@ namespace FSM_for_test
         
         public void Enter()
         {
-            _health.Died += OnDied;
-        }
-
-        public void Exit()
-        {
-            _health.Died -= OnDied;
-        }
-
-        public void Update()
-        {
-            
-        }
-
-        private void OnDied()
-        {
             _animationHandler.AnimateDeathEnable();
         }
+
+        public void Exit(){}
+
+        public void Update() {}
+
+      
     }
 }
